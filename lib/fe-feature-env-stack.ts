@@ -1,10 +1,7 @@
-import { Stack, StackProps, aws_s3_deployment as s3Deploy, aws_s3 as s3, Fn} from 'aws-cdk-lib';
+import { Stack, StackProps, aws_s3_deployment as s3Deploy, aws_s3 as s3, Fn, Duration} from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { StaticHosting, StaticHostingProps } from '@aligent/cdk-static-hosting';
 import { Behavior } from 'aws-cdk-lib/aws-cloudfront';
-import { assert } from 'console';
-import { Bucket } from 'aws-cdk-lib/aws-s3';
-
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 const HostingStackProps : StaticHostingProps = {
@@ -14,7 +11,16 @@ const HostingStackProps : StaticHostingProps = {
   createDnsRecord: false,
   createPublisherGroup: true,
   createPublisherUser: true,
-  enableErrorConfig: true
+  enableErrorConfig: true,
+  s3ExtendedProps: {
+    lifecycleRules: [
+      {
+        enabled: true,
+        expiration: Duration.days(30),
+      }
+    ]
+  }
+
 };
 export class FEFeatureEnvironment extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
