@@ -6,7 +6,7 @@ COPY . /data
 COPY pipe /data
 COPY pipe.yml /
 
-RUN wget -P / https://bitbucket.org/bitbucketpipelines/bitbucket-pipes-toolkit-bash/raw/0.6.0/common.sh \
+RUN wget -P /data https://bitbucket.org/bitbucketpipelines/bitbucket-pipes-toolkit-bash/raw/0.6.0/common.sh \
     && chmod a+x /data/*.sh \
     && apk add bash git openssh
 
