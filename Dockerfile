@@ -8,7 +8,7 @@ COPY pipe.yml /
 
 RUN wget -P / https://bitbucket.org/bitbucketpipelines/bitbucket-pipes-toolkit-bash/raw/0.6.0/common.sh \
     && chmod a+x /*.sh \
-    && apk add bash git ssh
+    && apk add bash git openssh
 
 WORKDIR /data
 
