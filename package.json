@@ -11,7 +11,6 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@aligent/cdk-static-hosting": "file:../cdk-constructs/packages/static-hosting",
     "@types/jest": "^27.5.0",
     "@types/node": "10.17.27",
     "@types/prettier": "2.6.0",
@@ -22,10 +21,14 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "@aligent/cdk-static-hosting": "file:../cdk-constructs/packages/static-hosting",
+    "@aligent/cdk-static-hosting": "^0.2.3-beta",
     "@aws-cdk/aws-ssm": "^1.161.0",
+    "@middy/validator": "^3.1.0",
     "aws-cdk-lib": "2.26.0",
-    "constructs": "10.1.25",
-    "source-map-support": "^0.5.21"
+    "@types/node": "10.17.27",
+    "constructs": "10.1.56",
+    "fs": "^0.0.1-security",
+    "source-map-support": "^0.5.21",
+    "sync-directory": "^5.1.7"
   }
 }

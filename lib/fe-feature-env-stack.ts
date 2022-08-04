@@ -1,30 +1,38 @@
-import { Stack, StackProps, aws_s3_deployment as s3Deploy, aws_s3 as s3, Fn, Duration} from 'aws-cdk-lib';
+import { Stack, StackProps, Duration} from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { StaticHosting, StaticHostingProps } from '@aligent/cdk-static-hosting';
 import { Behavior } from 'aws-cdk-lib/aws-cloudfront';
+import validator from '@middy/validator';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
-const HostingStackProps : StaticHostingProps = {
-  subDomainName: 'fetest',
-  domainName: 'bizkt.com.au',
-  certificateArn: 'arn:aws:acm:us-east-1:166381158005:certificate/64b49688-5db3-4665-aa62-45673ff356eb',
-  createDnsRecord: false,
-  createPublisherGroup: true,
-  createPublisherUser: true,
-  enableErrorConfig: true,
-  s3ExtendedProps: {
-    lifecycleRules: [
-      {
-        enabled: true,
-        expiration: Duration.days(30),
-      }
-    ]
-  }
+interface FEFeatureEnvironmentProps extends StackProps {
+  readonly subDomain: string
+  readonly domain: string
+  readonly certificateArn: string
+  readonly ttl: number
+}
 
-};
 export class FEFeatureEnvironment extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: FEFeatureEnvironmentProps) {
     super(scope, id, props);
+
+    const HostingStackProps : StaticHostingProps = {
+      subDomainName: props.subDomain,
+      domainName: props.domain,
+      certificateArn: props.certificateArn,
+      createDnsRecord: false,
+      createPublisherGroup: true,
+      createPublisherUser: true,
+      enableErrorConfig: true,
+      s3ExtendedProps: {
+        lifecycleRules: [
+          {
+            enabled: true,
+            expiration: Duration.days(props.ttl),
+          }
+        ]
+      }
+    };
 
     /*
       Static Hosting Resources
@@ -34,7 +42,7 @@ export class FEFeatureEnvironment extends Stack {
         {
           pathPattern: `/*`,
           isDefaultBehavior: true,
-        }
+        },
       )
     
    new StaticHosting(this, 'hosting-stack', {...HostingStackProps, behaviors: behaviors });

@@ -1,0 +1,20 @@
+name: Aligent PWA Feature environment
+image: aligent/pwa-feature-environnement:1.0.0
+description: Temporary feature environment for PWA projects
+category: Deployment
+repository: https://github.com/aligent/pwa-feature-environnement
+maintainer:
+  name: Aligent
+  website: https://www.aligent.com.au/
+vendor:
+  name: Aligent
+  website: https://www.aligent.com.au/
+variables:
+  - name: AWS_ACCESS_KEY_ID
+    default: "$AWS_ACCESS_KEY_ID"
+  - name: AWS_SECRET_ACCESS_KEY
+    default: "$AWS_SECRET_ACCESS_KEY"
+tags:
+- deployment
+- AWS
+- PWA
