@@ -12,6 +12,9 @@
 #   BEFORE_SCRIPT
 #   AFTER_SCRIPT
 
+# Setting current working directory
+cd "$(dirname "$0")"
+
 # BitBucket pipe toolkit
 source "$(dirname "$0")/common.sh"
 
@@ -30,6 +33,7 @@ executions(){
         fail "error executing: ${command}"
     fi
 }
+
 before_script(){
     if [[ ! -z ${BEFORE_SCRIPT} ]]; then
         warning "BEFORE_SCRIPT environment variable has been set: ${BEFORE_SCRIPT}"
@@ -38,6 +42,7 @@ before_script(){
         executions ${status} ${BEFORE_SCRIPT}
     fi
 }
+
 after_script(){
     if [[ ! -z ${AFTER_SCRIPT} ]]; then
         warning "AFTER_SCRIPT environment variable has been set: ${AFTER_SCRIPT}"
