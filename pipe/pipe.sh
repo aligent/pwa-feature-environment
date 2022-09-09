@@ -11,6 +11,7 @@
 #   NPM_COMMANDS
 #   BEFORE_SCRIPT
 #   AFTER_SCRIPT
+#   CKD_COMMAND_EXT
 
 # Setting current working directory
 cd "$(dirname "$0")"
@@ -59,15 +60,15 @@ npm_commands(){
 }
 
 cdk_commands(){
-    info "executing: cdk command: cdk ${COMMAND} ${STACK} ${EXTENTIONS}"
-    run npx cdk ${COMMAND} ${STACK} ${EXTENTIONS}
-    executions ${status} "npx cdk ${COMMAND} ${STACK} ${EXTENTIONS}"
+    info "executing: cdk command: cdk ${COMMAND} ${STACK} ${CKD_COMMAND_EXT}"
+    run npx cdk ${COMMAND} ${STACK} ${CKD_COMMAND_EXT}
+    executions ${status} "npx cdk ${COMMAND} ${STACK} ${CKD_COMMAND_EXT}"
 }
 
 authentication() {
-  info "using default authentication with AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY."
-  AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:?'AWS_ACCESS_KEY_ID variable missing.'}
-  AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:?'AWS_SECRET_ACCESS_KEY variable missing.'}
+    info "using default authentication with AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY."
+    AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:?'AWS_ACCESS_KEY_ID variable missing.'}
+    AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:?'AWS_SECRET_ACCESS_KEY variable missing.'}
 }
 
 preflight(){
@@ -95,21 +96,21 @@ preflight(){
         STACK="--all"
     else
         STACK=${CKD_STACK}
-        warning "CDK_STACK environment variable has been set: ${CDK_STACK}"   
+        warning "CDK_STACK environment variable has been set: ${CDK_STACK}"
     fi
     # npm commands
     if [[ -z ${NPM_COMMANDS} ]]; then
-        NPM_COMMANDS="npm install --no-fund"
+        NPM_COMMANDS="npm ci"
     else
         warning "NPM_COMMAND env has been set: ${NPM_COMMANDS}"
-        NPM_COMMANDS=${NPM_COMMANDS}   
+        NPM_COMMANDS=${NPM_COMMANDS}
     fi
     # Set --require-approval never
-    if [[ ${COMMAND} = 'deploy' ]] && [[ "{$EXTENTIONS}" != *"--require-approval"* ]]; then
+    if [[ ${COMMAND} = 'deploy' ]] && [[ "{$CKD_COMMAND_EXT}" != *"--require-approval"* ]]; then
         CKD_COMMAND_EXT="--require-approval never ${CKD_COMMAND_EXT}"
     else
         CKD_COMMAND_EXT=""
-    fi 
+    fi
 }
 
 authentication
